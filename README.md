@@ -1,519 +1,472 @@
-# 🚲 Jenson Bikes SQL Business Analysis
+# 💳 Credit Card Financial Analytics | Power BI
 
 ## 📌 Project Overview
 
-This project analyzes the **BikeStores relational database using SQL** to uncover actionable insights across stores, customers, products, categories, inventory, and staff performance.
+This project focuses on analyzing **credit card usage, customer behavior, financial performance, and credit risk using Power BI and DAX**.
 
-The objective was to transform transactional bicycle-sales data into meaningful business insights that support **sales optimization, customer retention, inventory planning, pricing strategy, and operational efficiency**.
+The objective was to transform credit card transaction and customer data into an interactive analytical dashboard covering **transaction trends, customer utilization, revenue performance, delinquency, satisfaction, loan behavior, and credit risk**.
 
-The project demonstrates practical application of advanced SQL techniques to solve real-world business problems and support data-driven decision-making.
+The project demonstrates practical application of **DAX calculations, KPI development, financial analysis, customer segmentation, and interactive Power BI visualization**.
 
 ---
 
-## 🎯 Business Objectives
+## 🎯 Business Problem
 
-The analysis focuses on five major business areas:
+A banking institution needs deeper visibility into credit card customer behavior and financial risk.
 
-- **Store Performance** — Evaluate store-wise sales and identify top-performing locations.
-- **Customer Behavior** — Analyze customer spending, ordering patterns, and loyalty.
-- **Product Analysis** — Identify best-selling, premium, and low-performing products.
-- **Staff Performance** — Evaluate employee order-handling efficiency.
-- **Business Growth** — Extract insights to support strategic decision-making.
+The analysis focuses on understanding:
+
+- How credit card transaction activity changes over time.
+- How customer utilization affects credit risk.
+- Which clients contribute the highest transaction value.
+- Which customers show high credit utilization.
+- How delinquency impacts customer risk.
+- How interest earned compares with revolving balances.
+- How income relates to credit limits.
+- How customer satisfaction varies by card category.
+- How credit limits influence personal loan approval.
+- Which customers require immediate risk attention.
 
 ---
 
 ## 📊 Dataset
 
-The project uses the **BikeStores relational database**, containing interconnected data across sales, customers, products, stores, staff, categories, and orders.
+The project uses customer-level and credit-card financial data containing information related to:
 
-### Key Business Entities
+- Client Transactions
+- Credit Limits
+- Transaction Amounts
+- Revolving Balances
+- Utilization Ratios
+- Delinquent Accounts
+- Interest Earned
+- Income
+- Personal Loans
+- Card Categories
+- Customer Satisfaction
 
-- Customers
-- Orders
-- Order Items
-- Stores
-- Staffs
-- Products
-- Categories
-- Brands
-- Stocks
+### Key Fields
 
----
-
-## 🗄️ Database Architecture
-
-The database follows a **normalized relational structure** with primary and foreign keys maintaining relationships between business entities.
-
-### Core Relationships
-
-```text
-Customers
-    │
-    └── Orders
-          │
-          ├── Order Items
-          │       │
-          │       └── Products
-          │               │
-          │               ├── Categories
-          │               └── Brands
-          │
-          ├── Stores
-          └── Staffs
-
-Stores
-    │
-    └── Stocks
-          │
-          └── Products
-```
-
-The relational structure enables multi-table SQL analysis across sales, customers, products, stores, staff, and inventory.
+- `Client_Num`
+- `Credit_Limit`
+- `Total_Trans_Amt`
+- `Avg_Utilization_Ratio`
+- `Total_Revolving_Bal`
+- `Delinquent_Acc`
+- `Interest_Earned`
+- `Income`
+- `Personal_loan`
+- `Card_Category`
+- `Cust_Satisfaction_Score`
 
 ---
 
 ## 🛠️ Tools & Technologies
 
-- **SQL**
-- MySQL
-- Relational Database Analysis
-- JOIN
-- GROUP BY
-- HAVING
-- Subqueries
-- Window Functions
-- RANK()
-- EXISTS / NOT EXISTS
-- Aggregate Functions
-- ORDER BY
-- LIMIT
-- Date Analysis
-- Cumulative Analysis
+- **Microsoft Power BI**
+- **DAX**
+- Power Query
+- Data Modeling
+- Data Transformation
+- KPI Development
+- Financial Analysis
+- Customer Analytics
+- Credit Risk Analysis
+- Data Visualization
+- Interactive Dashboarding
 
 ---
 
-# 📍 Store Performance Analysis
+# 📈 Transaction Performance Analysis
 
-## Q1. Total Products Sold by Each Store
+## 1. Running Total of Credit Card Transactions
 
-Calculated the total number of products sold by each store using order and order-item data.
+Created a DAX-based running total to track cumulative credit card transaction activity over time.
 
-### Result
-
-- **Baldwin Bikes — 4,779 products**
-- **Santa Cruz Bikes — 1,516 products**
-- **Rowlett Bikes — 1,? products**
-
-Baldwin Bikes emerged as the strongest store by total product quantity sold.
-
-### Business Insight
-
-The analysis highlights the strongest-performing store and helps management compare store-level sales performance for resource allocation and growth planning.
+This enables analysis of transaction growth and helps identify changes in customer spending patterns.
 
 ---
 
-# 📈 Cumulative Product Sales Analysis
+## 2. Four-Week Moving Average
 
-## Q2. Cumulative Quantity Sold by Product
+Calculated a **4-week moving average of Credit Limit for each client** using DAX time-based analysis.
 
-Calculated the cumulative quantity sold for each product over time using SQL window functions.
+This smooths short-term fluctuations and provides a clearer view of credit-limit trends.
 
-### SQL Technique
+---
 
-```sql
-SUM(quantity) OVER (
-    PARTITION BY product_id
-    ORDER BY order_date, order_id
+## 3. MoM & WoW Growth Analysis
+
+Calculated:
+
+- Month-over-Month transaction growth
+- Week-over-Week transaction growth
+
+These metrics help identify changes in transaction activity and monitor short-term and monthly financial trends.
+
+---
+
+# 💰 Financial & Customer Analysis
+
+## 4. Customer Acquisition Cost Analysis
+
+Calculated **Customer Acquisition Cost (CAC) as a ratio of transaction amount** to evaluate acquisition efficiency relative to customer transaction activity.
+
+This provides a financial perspective on customer acquisition performance.
+
+---
+
+## 5. Yearly Average Utilization Ratio
+
+Calculated the yearly average of `Avg_Utilization_Ratio` across all clients.
+
+The metric helps monitor overall credit utilization behavior and identify periods of increasing customer credit usage.
+
+---
+
+## 6. Interest Earned vs Revolving Balance
+
+Calculated the percentage relationship between:
+
+- `Interest_Earned`
+- `Total_Revolving_Bal`
+
+This helps evaluate interest generation relative to outstanding revolving balances.
+
+---
+
+# 🏆 Customer Performance Analysis
+
+## 7. Top 5 Clients by Transaction Amount
+
+Identified the **Top 5 clients based on Total Transaction Amount**.
+
+This helps management identify high-value customers and understand their contribution to overall transaction activity.
+
+---
+
+## 8. High Utilization Customers
+
+Identified clients whose:
+
+`Avg_Utilization_Ratio > 80%`
+
+These customers represent a potentially important group for **credit monitoring and risk-management strategies**.
+
+---
+
+# ⚠️ Customer Risk Analysis
+
+## 9. Customer Churn Indicator
+
+Created a KPI to flag customers who have:
+
+`Total_Trans_Amt = 0`
+
+during the **last 6 months**.
+
+This indicator helps identify inactive customers and supports customer retention and re-engagement strategies.
+
+---
+
+## 10. Delinquency Rate
+
+Calculated the percentage of clients with:
+
+`Delinquent_Acc > 0`
+
+This KPI provides a high-level view of delinquency exposure across the customer base.
+
+---
+
+# 🛡️ Credit Risk Score
+
+## 11. Credit Risk Scoring Model
+
+Created a client-level **Credit Risk Score** using three key financial risk factors:
+
+- `Avg_Utilization_Ratio`
+- `Delinquent_Acc`
+- `Total_Revolving_Bal`
+
+### Scoring Formula
+
+```text
+Credit Risk Score =
+100 - (
+    Utilization Score × 40%
+    +
+    Delinquency Score × 40%
+    +
+    Revolving Balance Score × 20%
 )
 ```
 
-### Business Insight
+The scoring model uses weighted components to evaluate customer credit exposure.
 
-The cumulative view helps track how product sales build over time and identify products with consistently increasing demand.
+### Risk Categories
 
----
+```text
+75 – 100  → Low Risk
+50 – 74   → Medium Risk
+0 – 49    → High Risk
+```
 
-# 🏆 Category-Wise Top-Selling Products
-
-## Q3. Highest-Selling Product in Each Category
-
-Identified the highest-performing product in each category based on:
-
-**Quantity × List Price**
-
-### SQL Techniques
-
-- `SUM()`
-- `RANK() OVER()`
-- `PARTITION BY`
-- `ORDER BY`
-
-### Key Results
-
-- Children Bicycles — Electra Boys' 1 (16-inch)
-- Cycling Clothing — Forte MT-01 Mountain Bike Socks
-- Cycling Components — SHIMANO Ultegra CS-6500 9-Speed Cassette
-- Touring Bikes — Raleigh Talus 7.2 - 2016
-- Mountain Bikes — Trek Domane SLR 9 - 2018
-- Road Bikes — Surly Long Haul Trucker - 2016
-- Miscellaneous — Park Tool 106 Repair Stand
-
-### Business Insight
-
-Category-level top sellers provide a strong basis for **inventory planning, promotional focus, and product-level sales strategy**.
+Higher credit-risk scores represent lower risk exposure.
 
 ---
 
-# 💰 Customer Spending Analysis
+## 📊 Risk Analysis Result
 
-## Q4. Highest-Spending Customer
+The analyzed dashboard sample contained:
 
-Identified the customer who generated the highest total order value across the database.
+- **11 Total Clients**
+- **11 High-Risk Clients**
+- **100% High-Risk Classification**
+- **0 Low-Risk Clients**
+- **0 Medium-Risk Clients**
 
-### Result
+The dashboard indicates that all clients in the analyzed sample were classified as **High Risk** based on the computed Credit Risk Score. :contentReference[oaicite:2]{index=2}
 
-**Pamelia Newman — $3,780,184.00**
+### Business Implication
 
-### Business Insight
+The result highlights the importance of:
 
-Pamelia Newman represents the highest-value customer based on total spending, highlighting an opportunity for **customer retention, loyalty programs, and personalized offers**.
-
----
-
-# 💎 Premium Product Analysis
-
-## Q5. Highest-Priced Product in Each Category
-
-Identified the highest-priced product available within every product category.
-
-### SQL Approach
-
-Compared each product's `list_price` against the maximum price within its category using a correlated subquery.
-
-### Key Findings
-
-The analysis identified premium products across **13 category-level results**.
-
-The highest-priced products included:
-
-- Trek Powerfly 8 FS Plus — $499,999
-- Trek Fuel EX 9.8 27.5 Plus — $529,999
-- Trek Domane SLR 9 Disc — $1,199,999
-
-### Business Insight
-
-Premium product identification supports **pricing strategy, inventory planning, premium product positioning, and merchandising decisions**.
+- Credit monitoring
+- Risk mitigation
+- Utilization management
+- Delinquency control
+- Customer engagement
 
 ---
 
-# 👥 Customer Engagement Analysis
+# 📊 Income & Credit Analysis
 
-## Q6. Orders Placed by Each Customer per Store
+## 12. Income vs Credit Limit Correlation
 
-Calculated the total number of orders placed by each customer across individual stores.
+Analyzed the relationship between:
 
-### SQL Techniques
+- Customer Income
+- Credit Limit
 
-- `JOIN`
-- `COUNT()`
-- `GROUP BY`
-- `ORDER BY`
-
-### Business Insight
-
-This analysis helps identify **high-activity customers within each store** and provides insights into customer engagement and store-level loyalty.
+The correlation analysis helps evaluate whether customers with higher income generally receive higher credit limits.
 
 ---
 
-# 👨‍💼 Staff Performance Analysis
+# 😊 Customer Satisfaction Analysis
 
-## Q7. Staff Members Who Have Not Handled Any Orders
+## 13. Customer Satisfaction by Card Category
 
-Identified staff members who currently have no assigned orders using a `LEFT JOIN`.
+Calculated the average `Cust_Satisfaction_Score` by `Card_Category`.
 
-### Result
-
-**4 staff members** were identified as having no handled orders.
-
-### Business Insight
-
-This helps management identify potentially underutilized employees and improve **workload distribution and resource allocation**.
+This helps identify differences in customer experience across credit-card categories and supports customer-service improvement initiatives.
 
 ---
 
-## Q8. Staff Members Performing Above Average
+# 🏦 Loan Approval vs Credit Limit
 
-Identified staff members who handled more orders than the overall average number of orders handled by staff.
+## 14. Personal Loan Analysis
 
-### Result
+Compared the average credit limit of customers:
 
-**4 staff members** performed above the average order-handling level.
+- With personal loans
+- Without personal loans
 
-### Business Insight
-
-These employees represent stronger operational performers and can be recognized for **productivity, workload management, and operational efficiency**.
-
----
-
-# 🚲 Product Demand Analysis
-
-## Q9. Top 3 Most Sold Products
-
-Identified the three products with the highest total quantity sold.
-
-### Top Products
-
-1. **Electra Cruiser 1 (24-Inch) - 2016 — 296 units**
-2. **Electra Townie Original 7D EQ - 2016 — 290 units**
-3. **Electra Townie Original 21D - 2016 — 289 units**
-
-### Business Insight
-
-These products represent the strongest quantity-based demand and can be prioritized for **inventory availability, promotions, and sales planning**.
+This analysis helps evaluate the relationship between **credit capacity and personal-loan adoption**.
 
 ---
 
-# 💵 Product Pricing Analysis
+# 🚨 High-Risk Customer Flag
 
-## Q10. Median Product List Price
+## 15. High-Risk Client Identification
 
-Calculated the median value of the product price list.
+Created a high-risk flag for customers whose:
 
-### Result
+- `Total_Revolving_Bal` exceeds **90% of Credit_Limit**
+- `Avg_Utilization_Ratio` is high
 
-**Median List Price — $74,999.00**
-
-### Business Insight
-
-The median price provides a reliable representation of the central product-price level while reducing the influence of extremely high or low-priced products.
+This enables management to identify customers requiring **immediate credit-risk monitoring**.
 
 ---
 
-# 📦 Inventory Analysis
+# 🧮 DAX Analysis
 
-## Q11. Products That Have Never Been Ordered
+The project demonstrates practical use of DAX for financial and customer analytics.
 
-Identified products that have never appeared in the order-item records using `NOT EXISTS`.
+### Key DAX Concepts
 
-### Result
-
-**14 products** were identified as never ordered.
-
-### Business Insight
-
-These products represent potential **slow-moving or inactive inventory**, creating an opportunity for repricing, promotional campaigns, inventory optimization, or catalogue review.
-
----
-
-# 🚲 Customer Product Category Analysis
-
-## Q12. Customers Who Ordered All Road Bike Products
-
-Identified customers who purchased every available product within the **Road Bikes** category.
-
-### Result
-
-**No customers were found** who had purchased all Road Bikes products.
-
-### Business Insight
-
-The result indicates that no single customer has purchased the complete Road Bikes product range, suggesting opportunities for **cross-selling and targeted product recommendations**.
+- CALCULATE
+- SUM
+- AVERAGE
+- DIVIDE
+- FILTER
+- DISTINCTCOUNT
+- DATEADD
+- DATESINPERIOD
+- TOPN
+- RANKX
+- IF
+- SWITCH
+- Variables
+- Time Intelligence
+- Conditional Logic
 
 ---
 
-# 🔍 Advanced SQL Techniques
+# 📌 KPI Framework
 
-The project demonstrates the practical application of multiple advanced SQL concepts.
+The dashboard tracks multiple financial and customer KPIs.
 
-### 🔗 JOIN
+### 💳 Transaction KPIs
 
-Used multiple joins to combine:
+- Total Transaction Amount
+- Running Transaction Total
+- MoM Growth
+- WoW Growth
+- 4-Week Moving Average
 
-- Customers
-- Orders
-- Order Items
-- Products
-- Stores
-- Staffs
-- Categories
+### 💰 Financial KPIs
 
----
+- Credit Limit
+- Revolving Balance
+- Interest Earned
+- Interest-to-Revolving Balance %
+- CAC Ratio
 
-### 📊 GROUP BY & HAVING
+### 👥 Customer KPIs
 
-Used grouped aggregations to calculate:
+- Active Customers
+- Top 5 Clients
+- Customer Churn Indicator
+- Customer Satisfaction
+- Loan Adoption
 
-- Store sales
-- Customer orders
-- Staff performance
-- Product sales
-- Category-level metrics
+### ⚠️ Risk KPIs
 
----
-
-### 🪟 Window Functions
-
-Used window functions for advanced analytical calculations.
-
-Examples:
-
-- Cumulative quantity sold
-- Product ranking within categories
+- Average Utilization Ratio
+- Delinquency Rate
+- Credit Risk Score
+- Risk Category
+- High-Risk Client Flag
 
 ---
 
-### 🏅 RANK()
+# 💡 Key Insights
 
-Used `RANK()` with `PARTITION BY` to identify the highest-performing products within individual categories.
+The analysis provides visibility into:
 
----
+- Credit card transaction trends.
+- Customer credit utilization.
+- High-value customer contribution.
+- Customer inactivity and potential churn.
+- Delinquency exposure.
+- Interest generation relative to revolving balances.
+- Income and credit-limit relationships.
+- Loan adoption behavior.
+- Customer satisfaction across card categories.
+- Overall customer credit risk.
 
-### 🧩 Subqueries
-
-Used correlated and nested subqueries for:
-
-- Highest-priced products
-- Above-average staff performance
-- Category comparisons
-
----
-
-### ✅ EXISTS / NOT EXISTS
-
-Used `NOT EXISTS` to identify products that had **never been ordered**.
+The risk-scoring dashboard specifically shows **11 out of 11 analyzed clients classified as High Risk**. :contentReference[oaicite:3]{index=3}
 
 ---
 
-### 📈 Aggregate Functions
+# 💼 Business Impact
 
-Used:
+The analysis can support banking teams in making decisions related to:
 
-- `SUM()`
-- `COUNT()`
-- `AVG()`
-- `MAX()`
+### 🛡️ Credit Risk Management
 
-to generate business-level metrics.
+Identify customers with high utilization, delinquency, and revolving-balance exposure.
 
----
+### 👥 Customer Retention
 
-# 💡 Key Findings
+Detect inactive customers and create targeted re-engagement strategies.
 
-The SQL analysis generated several important business findings:
+### 💰 Financial Performance
 
-- **Baldwin Bikes** emerged as the top-performing store by product quantity sold.
-- **Pamelia Newman** was the highest-spending customer at **$3,780,184.00**.
-- The top three products sold **296, 290, and 289 units** respectively.
-- The median product list price was **$74,999.00**.
-- **4 staff members** handled more orders than the overall staff average.
-- **4 staff members** had not handled any orders.
-- **14 products** had never been ordered.
-- No customer had purchased every product within the Road Bikes category.
-- Premium products were identified across **13 category-level results**.
+Monitor transaction activity, interest generation, and customer-level financial contribution.
 
----
+### 🏦 Credit & Loan Strategy
 
-# 💼 Business Recommendations
+Understand how credit limits relate to personal-loan adoption.
 
-Based on the SQL analysis, the following strategic actions can be considered:
+### 😊 Customer Experience
 
-### 🏪 Focus on Top-Performing Stores
+Evaluate satisfaction across different credit-card categories.
 
-Prioritize high-performing stores such as Baldwin Bikes to maximize sales opportunities and replicate successful strategies.
+### 📊 Management Reporting
 
-### 👥 Retain High-Value Customers
-
-Develop loyalty programs, personalized offers, and targeted promotions for high-spending customers.
-
-### 🚲 Promote High-Demand Products
-
-Maintain adequate inventory of top-selling products and use them in promotional campaigns.
-
-### 💰 Review Pricing Strategy
-
-Use product price distribution and premium-product analysis to support competitive pricing decisions.
-
-### 👨‍💼 Optimize Staff Allocation
-
-Review workload distribution and improve task allocation for underutilized staff members.
-
-### 📦 Optimize Inventory
-
-Review the 14 never-ordered products to identify opportunities for repricing, promotion, or catalogue optimization.
-
-### 📈 Expand in High-Demand Markets
-
-Use store and product performance insights to identify opportunities for future business expansion.
+Provide senior management with interactive KPIs and financial risk indicators.
 
 ---
 
 # 🚀 Project Outcome
 
-This project transformed raw **BikeStores transactional data into actionable business insights using advanced SQL analysis**.
+Developed a **Power BI credit card analytics solution using DAX** to evaluate financial performance, customer behavior, and credit risk.
 
-The analysis evaluated **store performance, customer spending, product demand, pricing, inventory, staff productivity, and category-level performance**.
+The project combines **transaction analysis, time intelligence, customer segmentation, financial KPIs, delinquency monitoring, and a weighted credit-risk scoring model** into a structured analytical framework.
 
-The project demonstrates how SQL can be used to identify **revenue drivers, high-value customers, operational gaps, and inventory opportunities** to support data-driven business decisions.
+The final analysis provides management with actionable visibility into **customer profitability, utilization behavior, churn indicators, delinquency exposure, and high-risk customers**.
 
 ---
 
 # 📚 Key Skills Demonstrated
 
-## 💻 SQL
+## 📊 Power BI
 
-- Advanced SQL Queries
-- Complex Joins
-- Multi-table Analysis
-- Window Functions
+- Dashboard Development
+- Interactive Visualizations
+- KPI Cards
+- Data Modeling
+- Report Design
+- Financial Reporting
+
+## 🧮 DAX
+
+- Time Intelligence
+- Running Totals
+- Moving Averages
+- MoM Growth
+- WoW Growth
 - Ranking
-- Subqueries
-- Correlated Subqueries
-- EXISTS / NOT EXISTS
-- Aggregate Functions
-- GROUP BY
-- HAVING
-- Date-Based Analysis
+- Top-N Analysis
+- Conditional Measures
+- Risk Scoring
+- KPI Calculations
 
-## 📊 Data Analytics
+## 💳 Financial Analytics
 
-- Sales Analysis
-- Customer Analytics
-- Product Analytics
-- Store Performance Analysis
-- Staff Performance Analysis
-- Pricing Analysis
-- Inventory Analysis
-- Business Insight Generation
+- Transaction Analysis
+- Credit Utilization
+- Interest Analysis
+- Revolving Balance Analysis
+- Delinquency Analysis
+- Credit Risk Assessment
+- Loan Analysis
 
-## 💼 Business Analytics
+## 👥 Customer Analytics
 
-- Revenue Optimization
-- Customer Retention
-- Product Strategy
-- Inventory Optimization
-- Pricing Strategy
-- Operational Efficiency
-- Sales Performance
-- Data-Driven Decision Making
+- Customer Segmentation
+- Customer Churn
+- Customer Satisfaction
+- High-Value Customer Analysis
+- Customer Behavior Analysis
 
 ---
 
 # 📂 Repository Structure
 
 ```text
-Jenson-Bikes-SQL-Analysis/
+Credit-Card-Financial-Analytics/
 │
 ├── Dataset/
-│   └── BikeStores_Database.sql
+│   └── Credit_Card_Dataset.xlsx
 │
-├── SQL/
-│   └── Jenson_Bikes_SQL_Analysis.sql
-│
-├── Presentation/
-│   └── Jenson_Bikes_SQL_Projects.pptx
+├── PowerBI/
+│   └── Credit_Card_Analytics.pbix
 │
 ├── Screenshots/
-│   └── SQL-query-results
+│   └── Credit_Risk_Analytics_Dashboard.png
 │
 └── README.md
 ```
@@ -530,10 +483,10 @@ Jenson-Bikes-SQL-Analysis/
 
 ## 🏷️ Project Type
 
-**SQL Data Analysis | Sales Analytics | Customer Analytics | Product Analytics | Inventory Analysis**
+**Power BI | DAX | Financial Analytics | Credit Risk Analytics | Customer Analytics**
 
 ---
 
 ## ⭐ Key Takeaway
 
-This project showcases the power of **SQL in transforming relational sales data into actionable insights** that support better decisions across sales, customers, products, inventory, and operations.
+This project demonstrates how **Power BI and DAX can transform credit-card data into actionable financial and risk insights** for better customer management and informed banking decisions.
